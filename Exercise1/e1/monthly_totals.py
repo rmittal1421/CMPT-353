@@ -12,9 +12,9 @@ def get_precip_data():
 def date_to_month(d):
     # You may need to modify this function, depending on your data types.
     convert = lambda date: ('%04i-%02i' % (date.year, date.month))
-    iterative_convert = np.vectorize(convert, otypes=[pd._libs.tslibs.timestamps.Timestamp])
-    new_row = iterative_convert(d)
-    return new_row
+    if isinstance(d, pd.Series):
+        convert = np.vectorize(convert, otypes=[np.str])
+    return convert(d)
 
 
 def pivot_months_pandas(data):
@@ -24,6 +24,7 @@ def pivot_months_pandas(data):
     This should use Pandas methods to manipulate the data.
     """
     # ...
+
     data['month'] = date_to_month(data['date'])
     
     df_totals = data.groupby(['name', 'month']).aggregate('sum').reset_index()
@@ -94,11 +95,11 @@ def pivot_months_loops(data):
 
 def main():
     data = get_precip_data()
-    totals, counts = pivot_months_loops(data)
-    totals.to_csv('totals.csv')
-    counts.to_csv('counts.csv')
-    np.savez('monthdata.npz', totals=totals.values, counts=counts.values)
-
+    # totals, counts = pivot_months_loops(data)
+    # totals.to_csv('totals.csv')
+    # counts.to_csv('counts.csv')
+    # np.savez('monthdata.npz', totals=totals.values, counts=counts.values)
+    pivot_months_pandas(data)
 
 if __name__ == '__main__':
     main()
