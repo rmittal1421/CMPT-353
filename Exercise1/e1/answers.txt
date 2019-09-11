@@ -7,6 +7,10 @@ A. I did the similar calculations in the part of 'Getting started with NumPy' an
    concrete rows and columns while working with Pandas which is missing in NumPy. It is definetely easier to read Panda's code.
 
 Q2. What were the running times of the two pivot_months_* functions? How can you explain the difference?
-A. Running times for both functions is fluctuating. One of the readings are:
+A. Running times for both functions are fluctuating. One of the readings I got are:
    For pivot_months_pandas = 16.2 ms ± 283 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
    For pivot_months_loops = 618 ms ± 10.4 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+   The reason for this difference in runtimes can be seen by looking at the way how loops work v/s how pandas in built functions work. The functions 
+   in pandas library treat the computations using matrix operations which can be performed in parallel on the machines and hence it is computed faster
+   by using multiple threads working at the same time. Whereas, for loops, the computations are done sequentially and hence, it takes more time than
+   pandas library functions.

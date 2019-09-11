@@ -29,11 +29,9 @@ def pivot_months_pandas(data):
     
     df_totals = data.groupby(['name', 'month']).aggregate('sum').reset_index()
     monthly = df_totals.pivot(index = 'name', columns = 'month', values = 'precipitation')
-    print(monthly)
 
     df_counts = data.groupby(['name', 'month']).aggregate('count').reset_index()
     counts = df_counts.pivot(index = 'name', columns = 'month', values = 'precipitation')
-    print(counts)
 
     return monthly, counts
 
@@ -95,11 +93,10 @@ def pivot_months_loops(data):
 
 def main():
     data = get_precip_data()
-    # totals, counts = pivot_months_loops(data)
-    # totals.to_csv('totals.csv')
-    # counts.to_csv('counts.csv')
-    # np.savez('monthdata.npz', totals=totals.values, counts=counts.values)
-    pivot_months_pandas(data)
+    totals, counts = pivot_months_loops(data)
+    totals.to_csv('totals.csv')
+    counts.to_csv('counts.csv')
+    np.savez('monthdata.npz', totals=totals.values, counts=counts.values)
 
 if __name__ == '__main__':
     main()
