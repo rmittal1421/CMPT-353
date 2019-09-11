@@ -24,15 +24,6 @@ def pivot_months_pandas(data):
     This should use Pandas methods to manipulate the data.
     """
     # ...
-    data['month'] = date_to_month(data['date'])
-    
-    df_totals = data.groupby(['name', 'month']).aggregate('sum').reset_index()
-    monthly = df_totals.pivot(index = 'name', columns = 'month', values = 'precipitation')
-    print(monthly)
-
-    df_counts = data.groupby(['name', 'month']).aggregate('count').reset_index()
-    counts = df_counts.pivot(index = 'name', columns = 'month', values = 'precipitation')
-    print(counts)
 
     return monthly, counts
 
