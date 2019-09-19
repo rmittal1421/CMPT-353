@@ -27,6 +27,7 @@ plt.plot(data['views'].values)
 plt.xlabel('Rank')
 plt.ylabel('Views')
 plt.title('Popularity Distribution')
+
 plt.subplot(1, 2, 2) 
 plt.plot(data['views'].values, data['second_hour'].values, 'b.')
 plt.xlabel('Day 1 views')
@@ -34,4 +35,5 @@ plt.ylabel('Day 2 views')
 plt.xscale('log')
 plt.yscale('log')
 plt.title('Daily Correlation')
+
 plt.savefig('wikipedia.png')

@@ -1,0 +1,15 @@
+Q1. In the hint above, what is the result of the calculation data['timestamp']*fit.slope + fit.intercept? What is the type, and describe the values.
+A. The values in the result of data['timestamp']*fit.slope + fit.intercept are the y values (at every x) of the best fit line formed by this calculation where 
+it follows the equation of a straight line y = mx + c where m is the slope of the line and c is the y-intercept (when x is 0). In terms of our calculations
+related to dog tweets, with the help of this calculation, we are getting the predicted value of the rating at the corresponding timestamp. It does it by doing
+the standard slope intersect calculation on each timestamp. The type of the result is a pandas series where every value is of type float.
+
+Q2. In the same hint, why does this produce a fit line on the graph? Why are the created_at values and timestamp values paired correctly to make points on the plot?
+A. We wanted to minimize the sum of squared distances between the generated line and the given data set to get the best fit line. 
+scipy.stats.linregressdata(data['timestamp']*fit.slope + fit.intercept) achieves this by calculating least square regression for two
+sets of measurements. In our case, the given data set is the dog rating data provided. The least-squares regression for two sets of 
+measurements is calculated by the above written calculation. 
+To calculate the values of prediction, we required the created_at values ('x' value)  to be int or float however we had them in the form
+of datatime object. Hence, we had to convert it to timestamp form so that we can calculate the prediction. So we can see that created_at
+and timestamp are effectively similar values and hence they are paired correctly and we want to plot our rating values against the created_at
+values for the ease of reading.
