@@ -1,7 +1,24 @@
-1. When smoothing the CPU temperature, do you think you got a better result with LOESS or Kalman smoothing? What differences did you notice?
-A.
+1. When smoothing the CPU temperature, do you think you got a better result with LOESS or Kalman smoothing? What 
+differences did you notice?
+A. In my opinion, Kalman Filtering worked better in this case. I noticed that the main difference was that Kalman 
+Filtering was acknowledging the "real" spikes (which were happening) when they were happining in a continous manner
+for some period of time. Kalman is treating a single jump/spike as noise and hence, ignores it but includes the spikes
+if they are together. On the other hand, LOESS (depending on what fraction of points are we considering as local
+neighbourhood) tries to capture spikes/jumps into the real data and treats them as real changes that might have happened.
 
-2. In the GPX files, you might have also noticed other data about the observations: time stamp, course (heading in degrees from north, 0–360),
-speed (in m/s). How could those have been used to make a better prediction about the “next” latitude and longitude? [Aside: I tried, and it
-didn't help much. I think the values are calculated from the latitude/longitude by the app: they don't really add much new information.]
-A. 
+Conclusion: It might be possible that 1 or 2 majors jumps that took place in a small sample set were true data, but since
+Kalman takes into account the grouped spikes more (which can surely be potential real data), it worked better according to me.
+
+2. In the GPX files, you might have also noticed other data about the observations: time stamp, course (heading in
+degrees from north, 0–360), speed (in m/s). How could those have been used to make a better prediction about the 
+“next” latitude and longitude? [Aside: I tried, and it didn't help much. I think the values are calculated from the
+latitude/longitude by the app: they don't really add much new information.]
+A. We are using Kalman Filtering for this part and hence, we are trying to predict (ourselves) where the user is going
+to be at the next timestamp. Better the prediction, better will be the estimated path of the user. 
+Course: If we know the course in which the user is heading, we can quickly estimate the changes the user is/or going to 
+make in his path. 
+Speed: Similarly, if we include speeds/velocity of the user, we can improve our prediction of knowing that where the user 
+will be at the next 
+Timestamp: In my opinion, by including the timestamp, we might not get better predictions since it does not contribute to
+what are really predicting. We want to better the estimation we provide to the user of his upcoming location so if we know
+that where the user is at any timestamp, it might not be useful to predict where he will be.
