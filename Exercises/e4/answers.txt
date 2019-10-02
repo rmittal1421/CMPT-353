@@ -1,0 +1,13 @@
+1. Based on your results for the last question, do you think daily temperatures are a good way to predict population density? Briefly explain why or why not.
+A. No, I do not think that there is any relationship between daily temperatures and population density of a city and hence the population density of a particular
+city cannot be predicted by looking at daily temperatures. As we can see in the plot generated, it does not make sense to plot a best fit line on this graph since
+the slope of the fit line is not going to explain any direct relations. Most of the temperatures lies between 10-30 degrees even if the city polulation density varies
+from 0-2000 people per squared kilometer. This helps us conclude that there is no real relationship between average temperatures and population density of an area/city.
+
+2. The larger data file (stations.json.gz) was kept compressed on disk throughout the analysis. Decompressing every time we run the program seems inefficient. 
+Why might this be faster than working with an uncompressed .json data?
+A. The speed issues here come because of the number of I/O operations we are going to perform in the case of large sample data. If we have huge amount of data, it is not
+possible to keep the whole of data in CPU's memory and hence, in order to read the data, we need to continously to do I/O operations on storage which is a really slow process. 
+On the other hand, the overhead of repeating the task of decompressing will be negligible since the data can be accessed in a very rapid manner since it is always going to be a 
+cache hit (since whole of the data is in cache in a compressed file). Hence, it will be faster to work with an uncompressed .json file and keeping it in the cache rather than 
+decompressing it and then doing a numerous number of I/O operations in case of huge data set.
