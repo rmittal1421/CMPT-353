@@ -9,7 +9,6 @@ plot_output = sys.argv[3]
 
 stations = pd.read_json(stations_file, lines=True)
 stations['avg_tmax'] = stations['avg_tmax']/10
-# print(stations)
 
 city_info = pd.read_csv(city_data_csv).dropna()
 city_info['area'] = city_info['area']/1000000
@@ -29,10 +28,10 @@ def distance(city, stations):
 def best_tmax(city, stations):
     avg_tmax_all_stations = distance(city, stations)
     index_min_dis = pd.Series.idxmin(avg_tmax_all_stations)
-    return stations.loc[index_min_dis]['avg_tmax']
+    return stations.iloc[index_min_dis]['avg_tmax']
 
 city_info['best_tmax'] = city_info.apply(best_tmax, axis=1, stations=stations)
-# print(city_info)
-
-plt.plot(city_info['density'].values, city_info['best_tmax'].values, 'b.', alpha=0.5)
-plt.show()
+plt.plot(city_info['density'], city_info['best_tmax'], 'b.')
+plt.xlabel('Population Density (people/km\u00b2)')
+plt.ylabel('Avg Max Temperature (\u00b0C)')
+plt.savefig(plot_output)

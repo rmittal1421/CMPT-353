@@ -13,10 +13,8 @@ def removeTailingNewLine(line):
     if re.search("(\\r|)\\n$", line):
         return re.sub("(\\r|)\\n$", "", line)
 
-some = pd.Series(open(movies).readlines()).apply(removeTailingNewLine)
-
 df = pd.DataFrame({
-    'title': some,
+    'title': pd.Series(open(movies).readlines()).apply(removeTailingNewLine),
 })
 
 def findClosestTitle(movie):

@@ -6,8 +6,9 @@ from 0-2000 people per squared kilometer. This helps us conclude that there is n
 
 2. The larger data file (stations.json.gz) was kept compressed on disk throughout the analysis. Decompressing every time we run the program seems inefficient. 
 Why might this be faster than working with an uncompressed .json data?
-A. The speed issues here come because of the number of I/O operations we are going to perform in the case of large sample data. If we have huge amount of data, it is not
-possible to keep the whole of data in CPU's memory and hence, in order to read the data, we need to continously to do I/O operations on storage which is a really slow process. 
-On the other hand, the overhead of repeating the task of decompressing will be negligible since the data can be accessed in a very rapid manner since it is always going to be a 
-cache hit (since whole of the data is in cache in a compressed file). Hence, it will be faster to work with an uncompressed .json file and keeping it in the cache rather than 
-decompressing it and then doing a numerous number of I/O operations in case of huge data set.
+A. It looks like the task of getting the compressed version of the file from storage and then decompressing it in main memory on every run time looks inefficient in 
+whereas keep it in the decompressed version in storage and then load it directly in the main memory looks faster. But in reality, if we keep our data in decompressed 
+manner in our storage, we need to perform a huge number of I/O operations while loading that data in the main memory to work on it. On the other hand, if we just keep
+the data in compressed version and load the compressed file in the main memory, this process is going to be much faster as it requires very few I/O operations (since the
+file size is really small now) and hence it is faster. The overhead of decompressing it in the main memory is negligible in front of I/O operations we performed in the other
+case. Hence, it is not slower. Instead, it is much faster to keep it compressed and decompress it on every run time.
