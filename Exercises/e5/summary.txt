@@ -1,0 +1,47 @@
+data-1.csv 
+
+        Mean  Standard_Deviation        Min        Max
+x   8.717696           12.155517 -22.635878  35.237055
+y  12.522874            6.639964  -2.565088  27.384153
+
+Coorelation_coeffecient:  0.9503256954375482 
+
+data-2.csv 
+
+       Mean  Standard_Deviation        Min        Max
+x -0.710787           11.481584 -33.271113  27.647000
+y -0.748987            6.257918 -18.621804  14.147315
+
+Coorelation_coeffecient:  0.9551531665750372 
+
+data-3.csv 
+
+       Mean  Standard_Deviation       Min        Max
+x  0.968907            2.235558 -2.449064   4.518885
+y  8.508535            1.149301  6.641734  10.551871
+
+Coorelation_coeffecient:  0.9819372646760663 
+
+data-4.csv 
+
+        Mean  Standard_Deviation  Min       Max
+x  49.905086           28.508611  0.0  87.37670
+y  18.553837           16.545896  0.0  44.56504
+
+Coorelation_coeffecient:  -0.08119306735490815 
+
+data-5.csv 
+
+        Mean  Standard_Deviation       Min        Max
+x  49.909994           28.500001  4.337892  91.052863
+y  18.555525           16.540796  0.055498  49.934197
+
+Coorelation_coeffecient:  -0.08823598983058885 
+
+data-6.csv 
+
+       Mean  Standard_Deviation        Min        Max
+x  7.216155           11.921599 -24.333821  35.402139
+y  7.602215           11.764382 -22.956357  36.079874
+
+Coorelation_coeffecient:  0.9350685662094906 
