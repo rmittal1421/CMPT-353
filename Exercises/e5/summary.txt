@@ -1,47 +1,53 @@
-data-1.csv 
+For file: data-1.csv
+                x           y
+count  100.000000  100.000000
+mean     8.717696   12.522874
+std     12.155517    6.639964
+min    -22.635878   -2.565088
+max     35.237055   27.384153
+Correlation coefficient: 0.9503256954375482
 
-        Mean  Standard_Deviation        Min        Max
-x   8.717696           12.155517 -22.635878  35.237055
-y  12.522874            6.639964  -2.565088  27.384153
+For file: data-2.csv
+                x           y
+count  100.000000  100.000000
+mean    -0.710787   -0.748987
+std     11.481584    6.257918
+min    -33.271113  -18.621804
+max     27.647000   14.147315
+Correlation coefficient: 0.9551531665750373
 
-Coorelation_coeffecient:  0.9503256954375482 
+For file: data-3.csv
+                x           y
+count  300.000000  300.000000
+mean     0.968907    8.508535
+std      2.235558    1.149301
+min     -2.449064    6.641734
+max      4.518885   10.551871
+Correlation coefficient: 0.9819372646760665
 
-data-2.csv 
+For file: data-4.csv
+                x           y
+count  118.000000  118.000000
+mean    49.905086   18.553837
+std     28.508611   16.545896
+min      0.000000    0.000000
+max     87.376700   44.565040
+Correlation coefficient: -0.08119306735490815
 
-       Mean  Standard_Deviation        Min        Max
-x -0.710787           11.481584 -33.271113  27.647000
-y -0.748987            6.257918 -18.621804  14.147315
+For file: data-5.csv
+                x           y
+count  118.000000  118.000000
+mean    49.909994   18.555525
+std     28.500001   16.540796
+min      4.337892    0.055498
+max     91.052863   49.934197
+Correlation coefficient: -0.08823598983058883
 
-Coorelation_coeffecient:  0.9551531665750372 
-
-data-3.csv 
-
-       Mean  Standard_Deviation       Min        Max
-x  0.968907            2.235558 -2.449064   4.518885
-y  8.508535            1.149301  6.641734  10.551871
-
-Coorelation_coeffecient:  0.9819372646760663 
-
-data-4.csv 
-
-        Mean  Standard_Deviation  Min       Max
-x  49.905086           28.508611  0.0  87.37670
-y  18.553837           16.545896  0.0  44.56504
-
-Coorelation_coeffecient:  -0.08119306735490815 
-
-data-5.csv 
-
-        Mean  Standard_Deviation       Min        Max
-x  49.909994           28.500001  4.337892  91.052863
-y  18.555525           16.540796  0.055498  49.934197
-
-Coorelation_coeffecient:  -0.08823598983058885 
-
-data-6.csv 
-
-       Mean  Standard_Deviation        Min        Max
-x  7.216155           11.921599 -24.333821  35.402139
-y  7.602215           11.764382 -22.956357  36.079874
-
-Coorelation_coeffecient:  0.9350685662094906 
+For file: data-6.csv
+                x           y
+count  100.000000  100.000000
+mean     7.216155    7.602215
+std     11.921599   11.764382
+min    -24.333821  -22.956357
+max     35.402139   36.079874
+Correlation coefficient: 0.9350685662094905
