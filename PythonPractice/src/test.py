@@ -1,22 +1,7 @@
 import numpy as np
-# x = 1
-# print(f'I am {x} years old')
+import pandas as pd
 
-# st = 'Hello'
-# fruits = ['Apple', 12]
-# print(type(fruits))
-# print(st.split())
-# print(st.replace('world', 'everyone'))
+arr = np.array([[1,2,3,4,5,6], [7,8,9,10,11,12], [13,14,15,16,17,18]])
+arr = arr.reshape((2, 9))
 
-# fruits = {'Apples', 'Grapes', 'Honey'}
-
-# fruits.remove('Grapes')
-# print(fruits)
-
-# def sayHello(name = 'Sam', age = 21):
-#     print(f'Hello {name}, you are {age}')
-
-# sayHello(age=20)
-
-arr = np.array([1,2])
 print(arr)
