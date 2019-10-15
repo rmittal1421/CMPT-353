@@ -2,3 +2,56 @@ partition_sort
 qs1
 qs2, qs3
 qs4, qs5, merge1
+
+1. In the A/B test analysis, do you feel like we're p-hacking? How comfortable are you coming to a conclusion at ?
+A. Yes, I feel that we are doing p-hacking. We are trying to analyse did our new search interface increase the number of searches overall.
+When we took the overall data (including both students and professors), we did not get a positive result that the searches have increased. So, in
+order to get the desired result, we changed the data set with which we were working and tried to hack the p-value and hence, even I got the p-value 
+<0.05 and I did get the desired result, but I do not feel comfortable while coming to this conclusion.
+
+2. If we had done T-tests between each pair of sorting implementation results, how many tests would we run? If we looked for  in them, what would the probability
+ be of having all conclusions correct, just by chance? That's the effective p-value of the many-T-tests analysis. [We could have done a Bonferroni correction when
+ doing multiple T-tests, which is a fancy way of saying “for  tests, look for significance at ”.]
+A. To perform each test with every other test, we need to do 7 choose 2 number of tests i.e. 7!/2!*5! = 21. Hence, we are going to perform 21 tests overall. With every
+test, we have a 5% chance of rejecting the null hypothesis by pure chance and hence, get the result we wanted. So overall, in order to get all conclusions correct by chance,
+each test should give correct conclusion by pure chance and hence probability of that is 
+= 0.05 ^ (number of tests)
+= 4.768e-28
+
+
+3. Give a ranking of the sorting implementations by speed, including which ones could not be distinguished. (i.e. which pairs could our experiment not conclude had
+ different running times?)
+ A. Below is the result I am getting:
+
+       Multiple Comparison of Means - Tukey HSD,FWER=0.05     
+=============================================================
+    group1         group2     meandiff  lower   upper  reject
+-------------------------------------------------------------
+    merge1     partition_sort -0.0956  -0.1255 -0.0657  True 
+    merge1          qs1       -0.0378  -0.0677 -0.0079  True 
+    merge1          qs2        0.0483   0.0184  0.0782  True 
+    merge1          qs3        0.0528   0.0229  0.0827  True 
+    merge1          qs4        0.0413   0.0114  0.0712  True 
+    merge1          qs5        0.0437   0.0138  0.0736  True 
+partition_sort      qs1        0.0578   0.0279  0.0877  True 
+partition_sort      qs2        0.1439   0.114   0.1738  True 
+partition_sort      qs3        0.1484   0.1185  0.1783  True 
+partition_sort      qs4        0.1369   0.107   0.1668  True 
+partition_sort      qs5        0.1393   0.1094  0.1692  True 
+     qs1            qs2        0.0861   0.0562  0.116   True 
+     qs1            qs3        0.0906   0.0607  0.1205  True 
+     qs1            qs4        0.0791   0.0492  0.109   True 
+     qs1            qs5        0.0815   0.0516  0.1114  True 
+     qs2            qs3        0.0045  -0.0254  0.0344 False 
+     qs2            qs4        -0.007  -0.0369  0.0229 False 
+     qs2            qs5       -0.0045  -0.0344  0.0253 False 
+     qs3            qs4       -0.0115  -0.0414  0.0184 False 
+     qs3            qs5       -0.0091   -0.039  0.0208 False 
+     qs4            qs5        0.0024  -0.0274  0.0323 False 
+-------------------------------------------------------------
+
+Rankings with my result:
+1. partition_sort
+2. qs1
+3. merge1
+4. qs2, qs3, qs4, qs5 -> Cannot conlude the order since the test rejected to notice the difference in the means.

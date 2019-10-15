@@ -14,8 +14,8 @@ OUTPUT_TEMPLATE = (
 def main():
     searchdata_file = sys.argv[1]
     df = pd.read_json(searchdata_file, orient='records', lines=True)
-    odd_users = df[df['uid']%2 == 0]
-    even_users = df[df['uid']%2 != 0]
+    odd_users = df[df['uid']%2 != 0]
+    even_users = df[df['uid']%2 == 0]
 
     never_searched_odd = odd_users[odd_users['search_count'] == 0]
     never_searched_even = even_users[even_users['search_count'] == 0]
@@ -23,10 +23,10 @@ def main():
     searched_even = even_users[even_users['search_count'] != 0]    
     contingency1 = [[len(searched_even), len(never_searched_even)], [len(searched_odd), len(never_searched_odd)]]
 
-    never_searched_instr_odd = odd_users[odd_users['search_count'] == 0 & odd_users['is_instructor']]
-    never_searched_instr_even = even_users[even_users['search_count'] == 0 & even_users['is_instructor']]
-    searched__instr_odd = odd_users[odd_users['search_count'] != 0 & odd_users['is_instructor']]
-    searched_instr_even = even_users[even_users['search_count'] != 0 & even_users['is_instructor']]
+    never_searched_instr_odd = odd_users[(odd_users['search_count'] == 0) & (odd_users['is_instructor'] == True)]
+    never_searched_instr_even = even_users[(even_users['search_count'] == 0) & (even_users['is_instructor'] == True)]
+    searched__instr_odd = odd_users[(odd_users['search_count'] != 0) & (odd_users['is_instructor'] == True)]
+    searched_instr_even = even_users[(even_users['search_count'] != 0) & (even_users['is_instructor'] == True)]
     contingency2 = [[len(searched_instr_even), len(never_searched_instr_even)], [len(searched__instr_odd), len(never_searched_instr_odd)]]
 
     more_users_p_value = stats.chi2_contingency(contingency1)[1]
