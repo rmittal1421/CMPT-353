@@ -15,10 +15,9 @@ def get_data(filename):
     Read the given CSV file. Returns sysinfo DataFrames for training and testing.
     """
     sysinfo = pd.read_csv(filename, parse_dates=['timestamp'])
-    sysinfo['temperature_next'] = sysinfo['temperature'].shift(periods=-1)
     
-    # TODO: add the column that we want to predict: the temperatures from the *next* time step.
-    sysinfo[y_column] = sysinfo['temperature_next'] # should be the temperature value from the next row
+    # TODO: add the column that we want to predict: the temperatures from the *next* time step. -> Done
+    sysinfo[y_column] = sysinfo['temperature'].shift(periods=-1) # should be the temperature value from the next row
     sysinfo = sysinfo[sysinfo[y_column].notnull()] # the last row should have y_column null: no next temp known
     
     # return most of the data to train, and pick an interesting segment to test
@@ -37,12 +36,12 @@ def get_trained_coefficients(X_train, y_train):
     Return the model, and the list of coefficients for the 'X_columns' variables in the regression.
     """
     
-    # TODO: create regression model and train.
-    reg = LinearRegression(fit_intercept=False).fit(X_train, y_train)
-    print(reg.score(X_train, y_train))
-    print(reg.coef_)
+    # TODO: create regression model and train. -> Done
+    reg = LinearRegression(fit_intercept=False)
+    model = reg.fit(X_train, y_train)
+    coefficients = model.coef_
 
-    # return model, coefficients
+    return model, coefficients
 
 
 def output_regression(coefficients):
@@ -72,6 +71,7 @@ def smooth_test(coef, sysinfo):
     transition = np.eye(dims) # identity matrix, except...
     
     # TODO: replace the first row of transition to use the coefficients we just calculated (which were passed into this function as coef.).
+    transition[0] = coef
 
     kf = KalmanFilter(
         initial_state_mean=initial,
@@ -94,13 +94,12 @@ def main():
     X_train, y_train = train[X_columns], train[y_column]
     X_valid, y_valid = test[X_columns], test[y_column]
 
-    get_trained_coefficients(X_train, y_train)
-    # model, coefficients = get_trained_coefficients(X_train, y_train)
-    # output_regression(coefficients)
-    # #print("Training score: %g\nTesting score: %g" % (model.score(X_train, y_train), model.score(X_valid, y_valid)))
+    model, coefficients = get_trained_coefficients(X_train, y_train)
+    output_regression(coefficients)
+    print("Training score: %g\nTesting score: %g" % (model.score(X_train, y_train), model.score(X_valid, y_valid)))
 
-    # plot_errors(model, X_valid, y_valid)
-    # smooth_test(coefficients, test)
+    plot_errors(model, X_valid, y_valid)
+    smooth_test(coefficients, test)
 
 
 if __name__ == '__main__':
