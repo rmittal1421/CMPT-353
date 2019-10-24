@@ -1,0 +1,12 @@
+1. Looking at your dog-rates.ipynb, do you think the residual are close-enough to being normal to look at the OLS p-value? 
+Can you reasonably conclude that the ratings are increasing?
+A. By looking at the histogram, it looks like the data is almost normal. Hence, it is fine to look at the OLS p-value.
+The OLS p-value is <0.05 and hence we are confident that ratings are different. The slope of the best fit line is +ve
+and hence we can conclude that ratings are infact increasing.
+
+2. Do you think that the new “better” prediction is letting the Kalman filter do a better job capturing the true signal in the
+noise?
+A. Yes, the new better prediction is letting kalman filtering do a better job since it is taking in the additional information
+it knows (through machine learning) about the data and hence using it to predict the next state. Whereas, previously we were 
+assuming that the state remains same because of which kalman filtering was considering a lot of true values as noise and hence
+ignoring it. But with this better prediction, it is considering those fluctations as truth and gives a better plot.

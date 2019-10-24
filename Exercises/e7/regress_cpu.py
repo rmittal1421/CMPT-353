@@ -37,8 +37,8 @@ def get_trained_coefficients(X_train, y_train):
     """
     
     # TODO: create regression model and train. -> Done
-    reg = LinearRegression(fit_intercept=False)
-    model = reg.fit(X_train, y_train)
+    model = LinearRegression(fit_intercept=False)
+    model.fit(X_train, y_train)
     coefficients = model.coef_
 
     return model, coefficients

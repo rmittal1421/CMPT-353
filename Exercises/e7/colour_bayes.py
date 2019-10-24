@@ -82,14 +82,14 @@ def main(infile):
 
     # TODO: build model_rgb to predict y from X.
     # TODO: print model_rgb's accuracy score
-    clf = GaussianNB()
-    model_rgb = clf.fit(X_train, y_train)
+    model_rgb = GaussianNB()
+    model_rgb.fit(X_train, y_train)
     print(model_rgb.score(X_test, y_test))
 
     # TODO: build model_lab to predict y from X by converting to LAB colour first.
     # TODO: print model_lab's accuracy score
-    pipeline = make_pipeline(FunctionTransformer(transformer, validate=False), GaussianNB())
-    model_lab = pipeline.fit(X_train, y_train)
+    model_lab = make_pipeline(FunctionTransformer(transformer, validate=True), GaussianNB())
+    model_lab.fit(X_train, y_train)
     print(model_lab.score(X_test, y_test))
 
     plot_predictions(model_rgb)
