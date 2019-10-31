@@ -94,8 +94,8 @@ def main():
     bayes_convert_model = make_pipeline(FunctionTransformer(transformer, validate=True), GaussianNB())
     knn_rgb_model = KNeighborsClassifier(n_neighbors=10)
     knn_convert_model = make_pipeline(FunctionTransformer(transformer, validate=True), KNeighborsClassifier(n_neighbors=10))
-    rf_rgb_model = RandomForestClassifier(n_estimators=1000, max_depth=13, min_samples_leaf=40)
-    rf_convert_model = make_pipeline(FunctionTransformer(transformer, validate=True), RandomForestClassifier(n_estimators=1000, max_depth=13, min_samples_leaf=40))
+    rf_rgb_model = RandomForestClassifier(n_estimators=400, max_depth=7, min_samples_leaf=15)
+    rf_convert_model = make_pipeline(FunctionTransformer(transformer, validate=True), RandomForestClassifier(n_estimators=400, max_depth=7, min_samples_leaf=15))
 
     # train each model and output image of predictions
     models = [bayes_rgb_model, bayes_convert_model, knn_rgb_model, knn_convert_model, rf_rgb_model, rf_convert_model]

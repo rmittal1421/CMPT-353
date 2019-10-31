@@ -1,8 +1,15 @@
 1. Which model did the best for the colour-prediction task? Can you give a theory about why? Do you have any theory about
 why RGB/LAB/HSV worked better for different models?
-A.
+A. On the basis of the scores and images I got, KNeighborsClassifier does the best job out of three. Interpretations of colours
+are open to human eye where some splots do not really have a clear primary colour name and hence estimating on the basis of 
+closest known colour splots makes much more sense and KNeighborsClassifier looks at k closest neighbours only instead of looking
+at overall probabilities like other models. Unlike RGB, Lab color is designed to approximate human vision. It aspires to perceptual
+uniformity and closely matches human perception of lightness and hence estimates the closest to what human eye would report. Therefore, 
+the model gives better estimation when we pass the transformed data (into LAB colours).
 
 2. Have a look at the cities in your validation data where the weather model makes the wrong prediction. Do you feel like
 the model is making reasonable mistakes? Can you think of any weather features that we could potentially add to make better 
 predictions?
-A.
+A. Yes, I do feel that the model is making reasonable mistakes. The model is making mistakes while predicting for cities that have
+slightly similar weather data. The predictions can be made better by accouting for features like altitude, humidity and wind
+speed which could help in differentiating a particular city from others.
