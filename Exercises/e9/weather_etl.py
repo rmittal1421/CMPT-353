@@ -25,7 +25,7 @@ def main(in_directory, out_directory):
 
     # TODO: finish here.
     weather = weather.filter(weather.qflag.isNull())
-    weather = weather.filter(weather.station.startwith('CA'))
+    weather = weather.filter(weather.station.startswith('CA'))
     weather = weather.filter(weather.observation == 'TMAX')
 
     weather = weather.select(
