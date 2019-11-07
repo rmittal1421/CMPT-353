@@ -28,7 +28,7 @@ def main(in_directory, out_directory):
     weather = weather.filter(weather.station.startswith('CA'))
     weather = weather.filter(weather.observation == 'TMAX')
 
-    weather = weather.select(
+    cleaned_data = weather.select(
         weather['qflag'],
         weather['station'],
         (weather['value']/10).alias('tmax')
