@@ -3,10 +3,48 @@
 reddit-0 test is effectively measuring the Spark startup time, so we can see how long it takes to do the actual work on reddit-2 in the best/
 worst cases.]
 A. 
+(1) - 0m19.716s
+(2) - 0m25.266s
+(3) - 0m21.053s
+(4) - 0m19.856s
 
 2. Based on the above, does it look like most of the time taken to process the reddit-2 data set is in reading the files, or calculating the 
 averages?
-A. 
+A. It looks like we are spending significant amount of time in reading the files instead of calculating the averages. I came to this conclusion
+by looking at the times noted in the first answer and with the help of some concepts of Spark. As we can see, times are least when we are mentioning
+schema and caching the data. What did we achieve there? Basically, we are helping Spark to not do the tedious task of figuring out a Schema while
+reading the csv file if there is no 'schema' parameter passed while reading the csv file. Just with this step, we reduce the time significantly 
+which is evident by the difference in time for part 3 vs part 2 in 1st question. After that, caching helps us avoid doing the task of reading the
+csv file, making a dataframe and calculating the averages twice. We still do it 1 time. So the dip in time taken in part 4 vs part 3 combines the 
+reduced time of a) reading data & constructing a dataframe as well as b) calculating averages. But dip in part 3 vs part 2 was just because of reading
+the data in a different manner which somewhat tells us that reading the data is quite a big task which takes most of our time and the operations
+performed after that don't which is also the case if we look from sql point of view.
 
 3. Where did you use .cache() in your wikipedia_popular.py? [Hint: the answer had better be “once”… but where?]
-A.
+A. In my code, I have used .cache() in line 25. After reading the data in a spark dataframe, adding the required column and filtering
+the unwanted data, I will get the dataframe (stats) with which I need to work with in following code where I am grouping the data to compute 
+the max_stats dataframe and then joining both stats and max_stats dataframe into one on the condition mentioned there. If I do not cache there,
+stats dataframe will first be computed to get max_stats dataframe and that result will be tossed out there. But in the very next line, I will 
+need stats dataframe again to perform the join operation where spark will be repeat the same operation again. Hence, caching there, where I did, 
+eliminates this problem and makes the program more effecient. This is more evident by the following physical plan for stats dataframe uptil joining
+statement (line 29). (without caching)
+
+== Physical Plan ==
+*(5) Project [filename#9, max(count)#21L, lan#0, name#1, count#2L, bytes#3L]
++- *(5) BroadcastHashJoin [filename#9], [filename#24], Inner, BuildLeft
+   :- BroadcastExchange HashedRelationBroadcastMode(List(input[0, string, true]))
+   :  +- *(3) HashAggregate(keys=[filename#9], functions=[max(count#2L)])
+   :     +- Exchange hashpartitioning(filename#9, 200)
+   :        +- *(2) HashAggregate(keys=[filename#9], functions=[partial_max(count#2L)])
+   :           +- *(2) Project [count#2L, filename#9]
+   :              +- *(2) Filter (((((isnotnull(name#1) && isnotnull(lan#0)) && (lan#0 = en)) && NOT (name#1 = Main_Page)) && NOT StartsWith(name#1, Special:)) && isnotnull(filename#9))
+   :                 +- *(2) Project [lan#0, name#1, count#2L, pythonUDF0#31 AS filename#9]
+   :                    +- BatchEvalPython [path_to_hour_non_udf(input_file_name())], [count#2L, lan#0, name#1, pythonUDF0#31]
+   :                       +- *(1) Project [count#2L, lan#0, name#1]
+   :                          +- *(1) FileScan csv [lan#0,name#1,count#2L] Batched: false, Format: CSV, Location: InMemoryFileIndex[file:/Users/raghavmittal/Desktop/MY_SFU/CMPT353/Exercises/e10/pagecounts-1], PartitionFilters: [], PushedFilters: [], ReadSchema: struct<lan:string,name:string,count:bigint>
+   +- *(5) Filter (((((isnotnull(name#1) && isnotnull(lan#0)) && (lan#0 = en)) && NOT (name#1 = Main_Page)) && NOT StartsWith(name#1, Special:)) && isnotnull(filename#24))
+      +- *(5) Project [lan#0, name#1, count#2L, bytes#3L, pythonUDF0#32 AS filename#24]
+         +- BatchEvalPython [path_to_hour_non_udf(input_file_name())], [lan#0, name#1, count#2L, bytes#3L, pythonUDF0#32]
+            +- *(4) FileScan csv [lan#0,name#1,count#2L,bytes#3L] Batched: false, Format: CSV, Location: InMemoryFileIndex[file:/Users/raghavmittal/Desktop/MY_SFU/CMPT353/Exercises/e10/pagecounts-1], PartitionFilters: [], PushedFilters: [], ReadSchema: struct<lan:string,name:string,count:bigint,bytes:bigint>
+
+Line 33 is repeated at line 41 and line 40 is repeated at line 45.

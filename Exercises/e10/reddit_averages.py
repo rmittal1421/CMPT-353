@@ -39,13 +39,12 @@ def main(in_directory, out_directory):
     comments = spark.read.json(in_directory, schema=comments_schema)
     # comments = spark.read.json(in_directory)
 
-    # TODO: calculate averages, sort by subreddit. Sort by average score and output that too.
     averages = comments.groupBy('subreddit').agg(functions.avg(comments['score']).alias('avg_score'))
 
     averages = averages.cache()
 
     averages_by_subreddit = averages.sort('subreddit')
-    averages_by_score = averages.sort('avg_score')
+    averages_by_score = averages.sort('avg_score', ascending=False)
 
     averages_by_subreddit.write.csv(out_directory + '-subreddit', mode='overwrite')
     averages_by_score.write.csv(out_directory + '-score', mode='overwrite')
