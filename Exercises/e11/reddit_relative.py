@@ -33,16 +33,17 @@ schema = types.StructType([ # commented-out fields won't be read
 
 
 def main(in_directory, out_directory):
-    comments = spark.read.json(in_directory, schema=schema)
+    comments = spark.read.json(in_directory, schema=schema).cache()
 
-    # TODO
     averages = comments.groupBy('subreddit').agg(functions.avg(comments['score']).alias('avg_score'))
     averages = averages.filter(averages.avg_score > 0)
 
-    comments = averages.join(comments, on='subreddit')
-    comments = comments.withColumn('rel_score', comments.score/comments.avg_score)
+    comments = comments.join(averages, on='subreddit') # -- without broadcast
+    # comments = comments.join(functions.broadcast(averages), on='subreddit') # -- with broadcast
+    comments = comments.withColumn('rel_score', comments.score/comments.avg_score).cache()
     max_relative = comments.groupBy('subreddit').agg(functions.max(comments['rel_score']).alias('max_rel_score'))
-    comments = max_relative.join(comments, on='subreddit')
+    comments = comments.join(max_relative, on='subreddit')  # -- without broadcast
+    # comments = comments.join(functions.broadcast(max_relative), on='subreddit')  # -- with broadcast
     comments = comments.filter(comments['max_rel_score'] == comments['rel_score'])
 
     best_author = comments.select(
@@ -51,7 +52,6 @@ def main(in_directory, out_directory):
         comments['rel_score']
     )
 
-    best_author.show()
     best_author.write.json(out_directory, mode='overwrite')
 
 
