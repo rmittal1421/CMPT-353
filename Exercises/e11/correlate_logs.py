@@ -1,7 +1,10 @@
 import sys
 from pyspark.sql import SparkSession, functions, types, Row
 import re
+import numpy as np
+import pandas as pd
 from pprint import pprint
+import math
 
 spark = SparkSession.builder.appName('correlate logs').getOrCreate()
 spark.sparkContext.setLogLevel('WARN')
@@ -17,11 +20,10 @@ def line_to_row(line):
     Take a logfile line and return a Row object with hostname and bytes transferred. Return None if regex doesn't match.
     """
     m = line_re.match(line)
-    # pprint(m)
-    print(m)
     if m:
         # TODO
-        return None
+        _, hostname, bytes_transferred, _ = re.split(line_re, line)
+        return Row(hostname=hostname, bytes_transferred=int(bytes_transferred))
     else:
         return None
 
@@ -34,21 +36,26 @@ def not_none(row):
 
 def create_row_rdd(in_directory):
     log_lines = spark.sparkContext.textFile(in_directory)
-    # TODO: return an RDD of Row() objects
-    rows = log_lines.map(line_to_row)
-    rows = rows.filter(not_none)
-    # pprint(rows.rdd.take(10))
-    # return rows
-
+    return log_lines.map(line_to_row).filter(not_none)
 
 def main(in_directory):
-    create_row_rdd(in_directory)
-    # logs = spark.createDataFrame(create_row_rdd(in_directory))
+    logs = spark.createDataFrame(create_row_rdd(in_directory))
 
-    # TODO: calculate r.
+    # logs = logs.groupBy(logs.hostname).agg(functions.count(logs.bytes_transferred).alias('count_requests'), functions.sum(logs.bytes_transferred).alias('sum_request_bytes'))
+    logs = logs.groupBy(logs.hostname).agg(functions.count(functions.lit(1)).alias('count_requests'), functions.sum(logs.bytes_transferred).alias('sum_request_bytes'))
+    sums = logs.select(
+        functions.lit(1),
+        logs.count_requests,
+        logs.sum_request_bytes,
+        logs.count_requests ** 2,
+        logs.sum_request_bytes ** 2,
+        logs.count_requests * logs.sum_request_bytes
+    ).groupBy().sum()
 
-    # r = 0 # TODO: it isn't zero.
-    # print("r = %g\nr^2 = %g" % (r, r**2))
+    n, sum_x, sum_y, sum_x_sq, sum_y_sq, sum_xy = sums.first()
+
+    r = (n*sum_xy - sum_x*sum_y)/(math.sqrt(n*sum_x_sq - sum_x ** 2)*math.sqrt(n*sum_y_sq - sum_y ** 2))
+    print("r = %g\nr^2 = %g" % (r, r**2))
 
 
 if __name__=='__main__':
