@@ -41,7 +41,6 @@ def create_row_rdd(in_directory):
 def main(in_directory):
     logs = spark.createDataFrame(create_row_rdd(in_directory))
 
-    # logs = logs.groupBy(logs.hostname).agg(functions.count(logs.bytes_transferred).alias('count_requests'), functions.sum(logs.bytes_transferred).alias('sum_request_bytes'))
     logs = logs.groupBy(logs.hostname).agg(functions.count(functions.lit(1)).alias('count_requests'), functions.sum(logs.bytes_transferred).alias('sum_request_bytes'))
     sums = logs.select(
         functions.lit(1),
