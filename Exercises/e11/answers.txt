@@ -14,4 +14,4 @@ would have done duplicate calculations multiple times resulting in increased run
 
 2. How did marking DataFrames for broadcast affect the running time of the “best author” program above?
 A. Without Broadcast: 0m53.729s
-   With Broadcast: 
+   With Broadcast: 0m41.488s
