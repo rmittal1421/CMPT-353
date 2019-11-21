@@ -1,9 +1,10 @@
 1. In your reddit_relative.py, what intermediate results did you .cache()? Briefly describe what would have happened if you hadn't used .cache()
 anywhere. (No need to time it, unless you really want to.)
 A. The values I cached are:
-1. The dataframe called comments when I am getting spark to read it from json file (line 36).
+1. The dataframe called comments when I am getting spark to read it from json file (line 36) since it is required by both groupBy and join operation
+following.
 2. After calculating the relative score for each subreddit and adding a corresponding column to comments, I am again caching in the updated 
-dataframe 'comments' (line 43).
+dataframe 'comments' (line 43) since it is again required by groupBy and join operation following this line.
 
 Explanation: I am caching at the times mentioned above because of the spark's lazy evaluation and the way the physical plans are laid out for the 
 variables. To compute any particular value, spark does it in the lazy fashion and does not evaluate until it has to but just keeps adding the 
@@ -13,5 +14,10 @@ step again to get that same value which was calculated previously. Therefore, if
 would have done duplicate calculations multiple times resulting in increased runtime and wasted resources.
 
 2. How did marking DataFrames for broadcast affect the running time of the “best author” program above?
-A. Without Broadcast: 0m53.729s 1m7.153s
-   With Broadcast: 0m41.488s
+A. Without Broadcast: 1m7.153s
+   With Broadcast: 0m44.458s
+
+Doing it with broadcast decreases the time by ~34%.
+Why it did that? A: Instead of arranging the rows of both the tables in the distributed system as our tables are stored, we broadcast the smaller
+table as in send a copy of smaller table to every executor to produce the result just by looking up this smaller dataframe for every row of 
+larger dataframe. This is a lot less expensive than plain expensive join operation.
