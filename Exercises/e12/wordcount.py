@@ -28,7 +28,7 @@ def main(in_directory, out_directory):
     df = df.orderBy(['count', 'word'], ascending=[0, 1])
     df = df.filter(df['word'] != '')
     df.show()
-    # df.write.csv(out_directory, mode='overwrite')
+    df.write.csv(out_directory, mode='overwrite')
 
 
 if __name__=='__main__':
