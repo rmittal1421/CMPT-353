@@ -20,7 +20,6 @@ def main(in_directory, out_directory):
     words = words.groupBy(words.word).agg(functions.count(functions.lit(1)).alias('count'))
     words = words.orderBy(['count', 'word'], ascending=[0, 1])
     words = words.filter(words['word'] != '')
-    words.show()
     words.write.csv(out_directory, compression=None, mode='overwrite')
 
 if __name__=='__main__':
