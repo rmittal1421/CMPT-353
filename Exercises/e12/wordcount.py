@@ -21,8 +21,7 @@ def main(in_directory, out_directory):
     words = words.orderBy(['count', 'word'], ascending=[0, 1])
     words = words.filter(words['word'] != '')
     words.show()
-    words.write.csv(out_directory, mode='overwrite')
-
+    words.write.csv(out_directory, compression=None, mode='overwrite')
 
 if __name__=='__main__':
     in_directory = sys.argv[1]
